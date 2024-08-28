@@ -3,6 +3,7 @@ package com.jiro.Spring_Web_Application.controllers;
 import com.jiro.Spring_Web_Application.dto.EmployeeDTO;
 import com.jiro.Spring_Web_Application.entities.EmployeeEntity;
 import com.jiro.Spring_Web_Application.repositories.EmployeeRepository;
+import com.jiro.Spring_Web_Application.services.EmployeeService;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -18,24 +19,25 @@ public class EmployeeController {
 //    return "Secret Message Returning";
 //    }
 
-   private final EmployeeRepository employeeRepository;
+   private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     @GetMapping(path = "/{employeeId}")
-    public EmployeeEntity getEmployeeId(@PathVariable(name = "employeeId") Long id){
-        return employeeRepository.findById(id).orElse(null);
+    public EmployeeDTO getEmployeeId(@PathVariable(name = "employeeId") Long id){
+        return employeeService.getEmployeeId(id);
+//        ctrl+n
     }
 
     @GetMapping
-    public List<EmployeeEntity> getEmployees(@RequestParam(required = false,name = "inputAge") Integer age, @RequestParam(required = false) String sortBy){
-        return employeeRepository.findAll();
+    public List<EmployeeDTO> getEmployees(@RequestParam(required = false,name = "inputAge") Integer age, @RequestParam(required = false) String sortBy){
+        return employeeService.getEmployees();
     }
     @PostMapping
-    public EmployeeEntity createNewEmployee(@RequestBody EmployeeEntity inputEmployee){
-        return employeeRepository.save(inputEmployee);
+    public EmployeeDTO createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
+        return employeeService.createNewEmployee(inputEmployee);
     }
     @PutMapping
     public String updateEmployeeById(){
