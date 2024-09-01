@@ -1,6 +1,8 @@
 package com.jiro.Spring_Web_Application.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.jiro.Spring_Web_Application.annotations.EmployeeRoleValidation;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,10 +17,39 @@ import java.time.LocalDate;
 public class EmployeeDTO {
 //    ctrl+alt+shift+click multiple line select
     private Long id;
+//    @NotNull(message = "Required field in Employee:name")
+//    private String name;
+//    @NotEmpty(message = "Name of the employee cannot be empty")
+//    private String name;
+    @NotBlank(message = "Name of the employee cannot be blank")
+    @Size(min = 3,max = 10,message = "Number of characters in name should be in the range :[3,10]")
     private String name;
+
+    @NotBlank(message = "Email of the employee cannot be blank")
+    @Email(message = "Email should be valid email")
     private String email;
+
+    @NotNull(message = "Age of the employee cannot be blank")
+    @Max(value = 80,message = "age should not be greater than 80")
+    @Min(value = 18,message = "age should be greater than 18")
     private Integer age;
+
+    @NotBlank(message = "Role of the employee cannot be blank")
+//    @Pattern(regexp = "^(ADMIN|USER)$",message = "Role of Employee can be USER or ADMIN")
+    @EmployeeRoleValidation
+    private String role;//ADMIN or USER
+
+    @NotNull(message ="salary of the employee should not be null" )
+    @Positive(message = "Salary of the employee should be positive")
+    @Digits(integer = 6,fraction = 2,message = "salary can be only in xxxx.yy form")
+    @DecimalMax(value = "10000.99")
+    @DecimalMin(value = "100.50")
+    private Double salary;
+
+    @PastOrPresent(message = "date of joining cannot be future")
     private LocalDate dateOfJoining;
+
+    @AssertTrue(message = "Employee should be active")
     @JsonProperty("isActive")
     private Boolean isActive;
 //    Default constructor

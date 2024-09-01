@@ -4,6 +4,7 @@ import com.jiro.Spring_Web_Application.dto.EmployeeDTO;
 import com.jiro.Spring_Web_Application.entities.EmployeeEntity;
 import com.jiro.Spring_Web_Application.repositories.EmployeeRepository;
 import com.jiro.Spring_Web_Application.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class EmployeeController {
 //        return employeeService.createNewEmployee(inputEmployee);
 //    }
     @PostMapping
-    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
+    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody @Valid EmployeeDTO inputEmployee){
         EmployeeDTO savedEmployee=employeeService.createNewEmployee(inputEmployee);
         return  new ResponseEntity<>(savedEmployee, HttpStatus.CREATED);
     }
@@ -68,7 +69,7 @@ public class EmployeeController {
 //        return employeeService.updateEmployeeById(employeeId,employeeDTO);
 //    }
     @PutMapping(path = "/{employeeId}")
-    public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long employeeId){
+    public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody @Valid EmployeeDTO employeeDTO,@PathVariable Long employeeId){
         return ResponseEntity.ok(employeeService.updateEmployeeById(employeeId,employeeDTO));
     }
 //    @DeleteMapping(path = "/{employeeId}")
