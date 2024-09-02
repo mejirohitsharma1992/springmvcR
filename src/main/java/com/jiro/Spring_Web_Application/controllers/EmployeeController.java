@@ -2,6 +2,7 @@ package com.jiro.Spring_Web_Application.controllers;
 
 import com.jiro.Spring_Web_Application.dto.EmployeeDTO;
 import com.jiro.Spring_Web_Application.entities.EmployeeEntity;
+import com.jiro.Spring_Web_Application.exceptions.ResourceNotFoundException;
 import com.jiro.Spring_Web_Application.repositories.EmployeeRepository;
 import com.jiro.Spring_Web_Application.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 //@RestController is a shorthand of
@@ -44,7 +46,8 @@ public class EmployeeController {
         Optional<EmployeeDTO> employeeDTO=employeeService.getEmployeeId(id);
         return employeeDTO
                 .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElse(ResponseEntity.notFound().build());
+//                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()->new ResourceNotFoundException("Employee not found with id"+id));
     }
 
 //    @GetMapping
